@@ -3,12 +3,12 @@ import {  TextField,Button,Input,Typography,Box,CircularProgress,FormHelperText}
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { green } from '@mui/material/colors';
-// import Validator from "../Error/Error";
+import Validator from "../../Components/Error/Error";
 import { useHistory ,useParams} from 'react-router-dom';
-import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
 
 export default function CreateProduct() {
     const [title,setTitle]=useState('');
@@ -42,7 +42,7 @@ export default function CreateProduct() {
           console.log(err)
           setError(err.message)
         })
-       }, [])
+       }, [id])
 
 
        useEffect(() => {
@@ -66,9 +66,10 @@ export default function CreateProduct() {
        }, [id])
 
     const getTitle=(e)=>{
-        if(e.target.value==''){
+        if(e.target.value===''){
             setTitleerr(true)
             setLoading(true)
+            setTitle(e.target.value)
         }
         else{
             setTitle(e.target.value)
@@ -78,9 +79,10 @@ export default function CreateProduct() {
     }
 
     const getDescription=(e)=>{
-        if(e.target.value==''){
+        if(e.target.value===''){
             setDescriptionerr(true)
             setLoading(true)
+            setDescription(e.target.value)
         }
         else{
             setDescription(e.target.value)
@@ -89,9 +91,10 @@ export default function CreateProduct() {
         }
     }
     const handleCategory=(e)=>{
-        if(e.target.value==''){
+        if(e.target.value===''){
             setCategoryerr(true)
             setLoading(true)
+            setCategory(e.target.value)
         }
         else{
             setCategory(e.target.value)
@@ -110,7 +113,7 @@ export default function CreateProduct() {
         formData.append('title', title);
         formData.append('description', description);
         formData.append('id', id);
-        if(file!=''){
+        if(file!==''){
         formData.append('image', file);
         }
         formData.append('category', category);
@@ -119,7 +122,7 @@ export default function CreateProduct() {
         method: "post"
         }).then(res=>{
             setLoading(false);
-            if(res.status==500){
+            if(res.status===500){
                 throw new Error('Something went wrong')
             }
             return res.json();
@@ -127,8 +130,23 @@ export default function CreateProduct() {
             console.log(data)
             setLoading(false);
             setLoadingFetch(false);
-            if(data.message=='success'){
+            if(data.message==='success'){
                 history.push('/')
+            }
+            else{
+                if(data.message.title){
+                    setError(data.message.title[0]);
+                    }
+                    if(data.message.description){
+                        setError(data.message.description[0]);
+                    }
+                    if(data.message.category){
+                            setError(data.message.category[0]);
+                    }
+                    if(data.message.image){
+                        setError(data.message.image[0]);
+                    }
+                
             }
 
         }).catch(err=>{
@@ -142,20 +160,22 @@ export default function CreateProduct() {
 
     return (
         <div style={{marginTop:'60px',marginLeft:'25px',padding:'10px'}}>
-            {/* { error ? <Validator severity="error" error={error}/> : null}   */}
+            { error ? <Validator severity="error" error={error}/> : null}  
             <Typography variant="h4" component="div" color="secondary">Edit Product</Typography>
             <TextField required id="outlined-required" color="secondary" label="Title" style={{marginTop:'20px',marginBottom:'20px',display:'block'}} fullWidth onChange={getTitle} error={titleerr} helperText={titleerr ? 'Kindly enter title' :''} value={title}/>
             <TextField required id="outlined-required" color="secondary" label="Description" multiline fullWidth rows={4} style={{marginTop:'20px',marginBottom:'20px',display:'block'}} onChange={getDescription} error={descriptionerr} helperText={descriptionerr ? 'Kindly enter description' :''} value={description}/>
             <FormControl fullWidth>
+            <InputLabel required id="test-select-label">Select Category</InputLabel>
+
                 <Select
-                    labelId="demo-simple-select-label"
+                color="secondary"
                     id="demo-simple-select"
                     value={category}
                     onChange={handleCategory}
+                    labelId="test-select-label"
+                    label="Select Category"
                 >
-                    <MenuItem value="">
-                        <em>Select Category</em>
-                    </MenuItem>
+                   
                     {
                         categorylist.length > 0 ? categorylist.map((cat)=>{
                             return (

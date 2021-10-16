@@ -3,7 +3,7 @@ import {  TextField,Button,Input,Typography,Box,CircularProgress,FormHelperText}
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { green } from '@mui/material/colors';
-// import Validator from "../Error/Error";
+import Validator from "../../Components/Error/Error";
 import { useHistory} from 'react-router-dom';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -41,13 +41,13 @@ export default function CreateProduct() {
        }, [])
 
     const getTitle=(e)=>{
-        if(e.target.value==''){
+        if(e.target.value===''){
             setTitleerr(true)
             setLoading(true)
         }
         else{
             setTitle(e.target.value)
-            if(title!='' && category!='' && file!='' && description!=''){
+            if(title!=='' && category!=='' && file!=='' && description!==''){
             setLoading(false)
             }
             setTitleerr(false)
@@ -55,27 +55,27 @@ export default function CreateProduct() {
     }
 
     const getDescription=(e)=>{
-        if(e.target.value==''){
+        if(e.target.value===''){
             setDescriptionerr(true)
             setLoading(true)
         }
         else{
             setDescription(e.target.value)
             setDescriptionerr(false)
-            if(title!='' && category!='' && file!='' && description!=''){
+            if(title!=='' && category!=='' && file!=='' && description!==''){
                 setLoading(false)
                 }
         }
     }
     const handleCategory=(e)=>{
-        if(e.target.value==''){
+        if(e.target.value===''){
             setCategoryerr(true)
             setLoading(true)
         }
         else{
             setCategory(e.target.value)
             setCategoryerr(false)
-            if(title!='' && category!='' && file!='' && description!=''){
+            if(title!=='' && e.target.value!=='' && file!=='' && description!==''){
                 setLoading(false)
                 }
         }
@@ -89,7 +89,7 @@ export default function CreateProduct() {
         }
         else{
         setFile(e.target.files[0])
-        if(title!='' && category!='' && e.target.files.length > 0 && description!=''){
+        if(title!=='' && category!=='' && e.target.files.length > 0 && description!==''){
             setLoading(false)
             }
             setFileerr(false)
@@ -109,7 +109,7 @@ export default function CreateProduct() {
         method: "post"
         }).then(res=>{
             setLoading(false);
-            if(res.status==500){
+            if(res.status===500){
                 throw new Error('Something went wrong')
             }
             return res.json();
@@ -117,8 +117,24 @@ export default function CreateProduct() {
             console.log(data)
             setLoading(false);
             setLoadingFetch(false);
-            if(data.message=='success'){
+            if(data.message==='success'){
                 history.push('/')
+            }
+            else{
+                
+                if(data.message.title){
+                setError(data.message.title[0]);
+                }
+                if(data.message.description){
+                    setError(data.message.description[0]);
+                }
+                if(data.message.category){
+                        setError(data.message.category[0]);
+                }
+                if(data.message.image){
+                    setError(data.message.image[0]);
+                }
+                
             }
 
         }).catch(err=>{
@@ -132,20 +148,21 @@ export default function CreateProduct() {
 
     return (
         <div style={{marginTop:'60px',marginLeft:'25px',padding:'10px'}}>
-            {/* { error ? <Validator severity="error" error={error}/> : null}   */}
+            { error ? <Validator severity="error" error={error}/> : null}  
             <Typography variant="h4" component="div" color="secondary">Create Product</Typography>
             <TextField required id="outlined-required" color="secondary" label="Title" style={{marginTop:'20px',marginBottom:'20px',display:'block'}} fullWidth onChange={getTitle} error={titleerr} helperText={titleerr ? 'Kindly enter title' :''}/>
             <TextField required id="outlined-required" color="secondary" label="Description" multiline fullWidth rows={4} style={{marginTop:'20px',marginBottom:'20px',display:'block'}} onChange={getDescription} error={descriptionerr} helperText={descriptionerr ? 'Kindly enter description' :''}/>
             <FormControl fullWidth>
+            <InputLabel required id="test-select-label">Select Category</InputLabel>
                 <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     value={category}
                     onChange={handleCategory}
+                    labelId="test-select-label"
+                    label="Select Category"
                 >
-                    <MenuItem value="">
-                        <em>Select Category</em>
-                    </MenuItem>
+                   
                     {
                         categorylist.length > 0 ? categorylist.map((cat)=>{
                             return (

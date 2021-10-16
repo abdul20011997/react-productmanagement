@@ -29,14 +29,15 @@ export default function Register() {
     }
     const handleUsername=(e)=>{
         // console.log(e.target.value)
-        if(e.target.value==''){
+        if(e.target.value===''){
             setErrusername(true)
             setLoading(true)
+            setUsername(e.target.value)
         }
         else{
             setErrusername(false)
             setUsername(e.target.value)
-            if(username!='' && email!='' && password!=''){
+            if(username!=='' && email!=='' && password!==''){
             setLoading(false)
             }
 
@@ -44,13 +45,14 @@ export default function Register() {
     }
 
     const handleChangePassword=(e)=>{
-         if(e.target.value==''){
+         if(e.target.value===''){
              setErrpassword(true)
              setLoading(true)
+            setPassword(e.target.value)
          }
          else{
             setErrpassword(false)
-            if(username!='' && email!='' && password!=''){
+            if(username!=='' && email!=='' && password!==''){
                 setLoading(false)
                 }
     
@@ -59,13 +61,14 @@ export default function Register() {
     }
 
     const handleEmail=(e)=>{
-        if(e.target.value=='' || !new RegExp(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,15}/g).test(e.target.value)){
+        if(e.target.value==='' || !new RegExp(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,15}/g).test(e.target.value)){
             setErremail(true)
             setLoading(true)
+            setEmail(e.target.value)
         }
         else{
             setErremail(false)
-            if(username!='' && email!='' && password!=''){
+            if(username!=='' && email!=='' && password!==''){
                 setLoading(false)
                 }
     
@@ -89,7 +92,7 @@ export default function Register() {
             }
         }).then(res=>{
             console.log(res)
-            if(res.status==403){
+            if(res.status===403){
                 throw new Error('User already exists')
             }
             // else if(res.status==500){
@@ -125,8 +128,8 @@ export default function Register() {
             <div style={{width:'30%',margin: 'auto',position:'absolute',top:'30%',left:'34%',borderRadius: '5px',background: '#f7f7f7',padding: '30px',textAlign: 'center'}}>
             <Typography variant="h4" component="div">Register</Typography>
             { error ? <Validator severity="error" error={error}/> : null}            
-            <TextField required placeholder="Enter Username" error={errusername} helperText={errusername && 'Kindly enter username'} onChange={handleUsername} id="outlined-required" color="primary" label="Username" style={{marginTop:'20px',marginBottom:'20px',display:'block'}} fullWidth/>
-            <TextField required placeholder="Enter Email" error={erremail} helperText={erremail ? 'Kindly enter valid email':''} onChange={handleEmail} id="outlined-required" color="primary" label="Email" style={{marginTop:'20px',marginBottom:'20px',display:'block'}} fullWidth/>
+            <TextField autoComplete='off' required placeholder="Enter Username" error={errusername} helperText={errusername && 'Kindly enter username'} onChange={handleUsername} id="outlined-required" color="primary" label="Username" style={{marginTop:'20px',marginBottom:'20px',display:'block'}} fullWidth/>
+            <TextField autoComplete='off' required placeholder="Enter Email" error={erremail} helperText={erremail ? 'Kindly enter valid email':''} onChange={handleEmail} id="outlined-required" color="primary" label="Email" style={{marginTop:'20px',marginBottom:'20px',display:'block'}} fullWidth/>
             <FormControl style={{width:'100%'}} variant="outlined">
                 <InputLabel htmlFor="outlined-adornment-password" required>Password</InputLabel>
                 <OutlinedInput placeholder="Enter Password" error={errpassword}  fullWidth required color="primary" id="outlined-adornment-password" onChange={handleChangePassword} type={showpassword ? 'text' : 'password'}

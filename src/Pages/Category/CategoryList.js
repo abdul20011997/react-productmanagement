@@ -90,13 +90,9 @@ export default function CategoryList() {
             {
               category.length > 0 ? category.map((cat,i)=>{
                   return (
-                    <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }} key={cat.id}>
-                      <TableCell component="th" align="center" style={{ fontSize:'16px' }}>{i+1}</TableCell>
-                      <TableCell align="center" style={{ fontSize:'16px' }}>{cat.title}</TableCell>
-                      <TableCell align="center" style={{ fontSize:'16px' }}><Button variant="contained" style={{marginRight:'10px'}} onClick={()=>{editcategory(cat.id)}}>Edit</Button><Button variant="contained" color="error" onClick={()=>{deletecategory(cat.id)}}>Delete</Button></TableCell>
-                      </TableRow>
+                    <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }} key={cat.id}><TableCell component="th" align="center" style={{ fontSize:'16px' }}>{i+1}</TableCell><TableCell align="center" style={{ fontSize:'16px' }}>{cat.title}</TableCell><TableCell align="center" style={{ fontSize:'16px' }}><Button variant="contained" style={{marginRight:'10px'}} onClick={()=>{editcategory(cat.id)}}>Edit</Button><Button variant="contained" color="error" onClick={()=>{deletecategory(cat.id)}}>Delete</Button></TableCell></TableRow>
                   )
-              }) : null
+              }) : <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }} ><TableCell component="th" align="center" style={{ fontSize:'16px' }}>No Category Available</TableCell></TableRow>
             }
         </TableBody>
       </Table>

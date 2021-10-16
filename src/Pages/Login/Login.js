@@ -30,13 +30,14 @@ export default function Login() {
     const handleChangePassword=(e)=>{
         // console.log(e.target.value)
         // setPassword(e.target.value)
-        if(e.target.value==''){
+        if(e.target.value===''){
             setErrpassword(true)
             setLoading(true)
+           setPassword(e.target.value)
         }
         else{
            setErrpassword(false)
-           if(email!='' && password!=''){
+           if(email!=='' && password!==''){
             setLoading(false)
             }
            setPassword(e.target.value)
@@ -44,13 +45,14 @@ export default function Login() {
     }
     const handleEmail=(e)=>{
         // setEmail(e.target.value)
-        if(e.target.value=='' || !new RegExp(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,15}/g).test(e.target.value)){
+        if(e.target.value==='' || !new RegExp(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,15}/g).test(e.target.value)){
             setErremail(true)
             setLoading(true)
+            setEmail(e.target.value)
         }
         else{
             setErremail(false)
-            if(email!='' && password!=''){
+            if(email!=='' && password!==''){
                 setLoading(false)
             }
             setEmail(e.target.value)
@@ -72,10 +74,10 @@ export default function Login() {
             }
         }).then(res=>{
             setLoading(false);
-            if(res.status==401){
+            if(res.status===401){
                 throw new Error('Password does not match')
             }
-            else if(res.status==404){
+            else if(res.status===404){
                 throw new Error('User not found')
             }
             
@@ -84,7 +86,7 @@ export default function Login() {
             console.log(data)
             setLoading(false);
             setLoadingFetch(false);
-            if(data.message=='success'){
+            if(data.message==='success'){
                 handleAuth();
                 localStorage.setItem("isauth", true)
                 localStorage.setItem("userdetails", JSON.stringify(data.user))

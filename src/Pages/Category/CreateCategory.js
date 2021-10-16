@@ -16,7 +16,7 @@ export default function CreateCategory() {
     const history=useHistory();
     
     const getTitle=(e)=>{
-        if(e.target.value==''){
+        if(e.target.value===''){
             setTitleerr(true)
             setLoading(true)
         }
@@ -39,7 +39,7 @@ export default function CreateCategory() {
         method: "post"
         }).then(res=>{
             setLoading(false);
-            if(res.status==500){
+            if(res.status===500){
                 throw new Error('Something went wrong')
             }
             return res.json();

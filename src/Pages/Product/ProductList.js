@@ -17,6 +17,7 @@ import Validator from "../../Components/Error/Error";
 
 export default function ProductList() {
   const[product,setProduct]=useState([]);
+  const[category,setCategory]=useState([]);
   const [error,setError]=useState('');
   const history=useHistory();
   useEffect(() => {
@@ -28,6 +29,7 @@ export default function ProductList() {
     }).then(data=>{
      setError(null)
      setProduct(data.data)
+     setCategory(data.category)
        console.log(data)
     }).catch(err=>{
       console.log(err)
@@ -50,7 +52,7 @@ export default function ProductList() {
         body: formData,
         method: "delete"
         }).then(res=>{
-            if(res.status==500){
+            if(res.status===500){
                 throw new Error('Something went wrong')
             }
             return res.json();
@@ -82,7 +84,7 @@ export default function ProductList() {
             <TableCell align="center" style={{ width: 10,fontSize:'18px',fontWeight:'bold'}}>Title</TableCell>
             <TableCell align="center" style={{ width: 10,fontSize:'18px',fontWeight:'bold'}}>description</TableCell>
             <TableCell align="center" style={{ width: 10,fontSize:'18px',fontWeight:'bold'}}>Image</TableCell>
-
+            <TableCell align="center" style={{ width: 10,fontSize:'18px',fontWeight:'bold'}}>Category</TableCell>
             <TableCell align="center" style={{ width: 10,fontSize:'18px',fontWeight:'bold' }}>Action</TableCell>
             
           </TableRow>
@@ -96,12 +98,12 @@ export default function ProductList() {
                       <TableCell component="th" align="center" style={{ fontSize:'16px' }}>{i+1}</TableCell>
                       <TableCell align="center" style={{ fontSize:'16px' }}>{product.title}</TableCell>
                       <TableCell align="center" style={{ fontSize:'16px' }}>{product.description}</TableCell>
-                      <TableCell align="center" style={{ fontSize:'16px' }}><img src={product.image ? 'http://localhost:8000/storage/images/'+product.image :"https://cdn.pixabay.com/photo/2020/08/09/11/31/business-5475283__340.jpg"} style={{height:'100px',width:'100px'}}/></TableCell>
+                      <TableCell align="center" style={{ fontSize:'16px' }}><img src={product.image ? 'http://localhost:8000/storage/images/'+product.image :"https://cdn.pixabay.com/photo/2020/08/09/11/31/business-5475283__340.jpg"} style={{height:'100px',width:'100px'}} alt={product.title}/></TableCell>
+                      {category.length > 0 ? category.map(cat => cat.id == product.category_id  ? <TableCell align="center" style={{ fontSize:'16px' }}>{cat.title}</TableCell> :'') : <TableCell align="center" style={{ fontSize:'16px' }}></TableCell>}
                       <TableCell align="center" style={{ fontSize:'16px' }}><Button variant="contained" style={{marginRight:'10px'}} onClick={()=>{editproduct(product.id)}}>Edit</Button><Button variant="contained" color="error" onClick={()=>{deleteproduct(product.id)}}>Delete</Button></TableCell>
-                      
                       </TableRow>
                   )
-              }) : null
+              }) :  <TableRow sx={{ '&:last-child td, &:last-child th': { border: 0 } }} ><TableCell component="th" align="center" style={{ fontSize:'16px' }}>No Product Available</TableCell></TableRow>
             }
         </TableBody>
       </Table>

@@ -16,9 +16,11 @@ export default function EditCategory() {
     const history=useHistory();
     const { id } = useParams() 
     const getTitle=(e)=>{
-        if(e.target.value==''){
+        console.log(e.target.value)
+        if(e.target.value===''){
             setTitleerr(true)
             setLoading(true)
+            setTitle(e.target.value)
         }
         else{
             setTitle(e.target.value)
@@ -55,7 +57,7 @@ export default function EditCategory() {
         method: "post"
         }).then(res=>{
             setLoading(false);
-            if(res.status==500){
+            if(res.status===500){
                 throw new Error('Something went wrong')
             }
             return res.json();
